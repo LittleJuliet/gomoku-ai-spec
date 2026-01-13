@@ -27,12 +27,12 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create directories `src/components`, `src/pages`, `src/stores`, `src/assets`, `src/styles`, `tests/unit`, `tests/e2e`
-- [ ] T002 Initialize Vue 2.7 app scaffold in `package.json`, `index.html`, `src/main.js`, `src/App.vue`
-- [ ] T003 Configure Tailwind in `tailwind.config.js`, `postcss.config.js`, `src/styles/tailwind.css`, import in `src/main.js`
-- [ ] T004 Configure Pinia plugin setup in `src/main.js`
-- [ ] T005 Configure test tooling in `package.json`, `vitest.config.js`, `cypress.config.js`
-- [ ] T006 Add store entry file `src/stores/index.js` and export `useGameStore`
+- [x] T001 Create directories `src/components`, `src/pages`, `src/stores`, `src/assets`, `src/styles`, `tests/unit`, `tests/e2e`
+- [x] T002 Initialize Vue 2.7 app scaffold in `package.json`, `index.html`, `src/main.js`, `src/App.vue`
+- [x] T003 Configure Tailwind in `tailwind.config.js`, `postcss.config.js`, `src/styles/tailwind.css`, import in `src/main.js`
+- [x] T004 Configure Pinia plugin setup in `src/main.js`
+- [x] T005 Configure test tooling in `package.json`, `vitest.config.js`, `cypress.config.js`
+- [x] T006 Add store entry file `src/stores/index.js` and export `useGameStore`
 
 ---
 
@@ -42,8 +42,8 @@ description: "Task list template for feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Create game engine helpers in `src/stores/gameEngine.js` (board init, move validation, turn switching)
-- [ ] T008 Implement Pinia game store in `src/stores/game.js` (state, startGame, placeMove, moveCount)
+- [x] T007 Create game engine helpers in `src/stores/gameEngine.js` (board init, move validation, turn switching)
+- [x] T008 Implement Pinia game store in `src/stores/game.js` (state, startGame, placeMove, moveCount)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -57,13 +57,13 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T009 [P] [US1] Build board cell component in `src/components/BoardCell.vue`
-- [ ] T010 [P] [US1] Build game board grid in `src/components/GameBoard.vue`
-- [ ] T011 [P] [US1] Build status display in `src/components/GameStatus.vue`
-- [ ] T012 [US1] Compose page layout in `src/pages/HomePage.vue`
-- [ ] T013 [US1] Initialize `useGameStore` and bind state in `src/pages/HomePage.vue`
-- [ ] T014 [US1] Wire board clicks to store actions in `src/pages/HomePage.vue`
-- [ ] T015 [US1] Render HomePage in `src/App.vue`
+- [x] T009 [P] [US1] Build board cell component in `src/components/BoardCell.vue`
+- [x] T010 [P] [US1] Build game board grid in `src/components/GameBoard.vue`
+- [x] T011 [P] [US1] Build status display in `src/components/GameStatus.vue`
+- [x] T012 [US1] Compose page layout in `src/pages/HomePage.vue`
+- [x] T013 [US1] Initialize `useGameStore` and bind state in `src/pages/HomePage.vue`
+- [x] T014 [US1] Wire board clicks to store actions in `src/pages/HomePage.vue`
+- [x] T015 [US1] Render HomePage in `src/App.vue`
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently
 
@@ -77,9 +77,9 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T016 [US2] Implement win/draw detection in `src/stores/gameEngine.js` (>=5 连线、满盘判平)
-- [ ] T017 [US2] Update game store to set status/winner and block moves in `src/stores/game.js`
-- [ ] T018 [US2] Update result UI in `src/components/GameStatus.vue`
+- [x] T016 [US2] Implement win/draw detection in `src/stores/gameEngine.js` (>=5 连线、满盘判平)
+- [x] T017 [US2] Update game store to set status/winner and block moves in `src/stores/game.js`
+- [x] T018 [US2] Update result UI in `src/components/GameStatus.vue`
 
 **Checkpoint**: User Stories 1 AND 2 should both work independently
 
@@ -93,8 +93,8 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T019 [US3] Add restart action to reset game state in `src/stores/game.js`
-- [ ] T020 [US3] Add restart control in `src/pages/HomePage.vue`
+- [x] T019 [US3] Add restart action to reset game state in `src/stores/game.js`
+- [x] T020 [US3] Add restart control in `src/pages/HomePage.vue`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -104,10 +104,10 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T021 [P] Refine layout and spacing with Tailwind in `src/pages/HomePage.vue`
-- [ ] T022 [P] Add aria labels for board cells in `src/components/BoardCell.vue`
-- [ ] T023 [P] Update usage notes in `README.md`
-- [ ] T024 [P] Sync local actions with `specs/001-gomoku-duel/contracts/openapi.yaml`
+- [x] T021 [P] Refine layout and spacing with Tailwind in `src/pages/HomePage.vue`
+- [x] T022 [P] Add aria labels for board cells in `src/components/BoardCell.vue`
+- [x] T023 [P] Update usage notes in `README.md`
+- [x] T024 [P] Sync local actions with `specs/001-gomoku-duel/contracts/openapi.yaml`
 
 ---
 

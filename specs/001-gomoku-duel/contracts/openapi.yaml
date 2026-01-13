@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Gomoku Duel API (Local)
   version: 1.0.0
-  description: Local game-state API contract for Gomoku duel.
+  description: Local game-state API contract for Gomoku duel (client-side actions only).
 servers:
   - url: http://localhost
 paths:
