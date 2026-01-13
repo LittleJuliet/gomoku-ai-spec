@@ -1,0 +1,136 @@
+openapi: 3.0.3
+info:
+  title: Gomoku Duel API (Local)
+  version: 1.0.0
+  description: Local game-state API contract for Gomoku duel.
+servers:
+  - url: http://localhost
+paths:
+  /games:
+    post:
+      summary: Start a new game
+      responses:
+        "201":
+          description: Game created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Game"
+  /games/{gameId}:
+    get:
+      summary: Get game state
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Current game state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Game"
+        "404":
+          description: Game not found
+  /games/{gameId}/moves:
+    post:
+      summary: Place a move
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MoveInput"
+      responses:
+        "200":
+          description: Move accepted and game updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Game"
+        "400":
+          description: Invalid move (occupied cell or out of range)
+        "409":
+          description: Game already finished or player turn mismatch
+  /games/{gameId}/restart:
+    post:
+      summary: Restart game (new game instance)
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: New game created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Game"
+components:
+  schemas:
+    Game:
+      type: object
+      required:
+        - id
+        - boardSize
+        - board
+        - currentPlayer
+        - status
+        - winner
+        - moveCount
+      properties:
+        id:
+          type: string
+        boardSize:
+          type: integer
+          enum: [15]
+        board:
+          type: array
+          description: 15x15 matrix of cell values
+          items:
+            type: array
+            items:
+              $ref: "#/components/schemas/Cell"
+        currentPlayer:
+          $ref: "#/components/schemas/Player"
+        status:
+          type: string
+          enum: [idle, in_progress, finished]
+        winner:
+          type: string
+          enum: [black, white, draw, none]
+        moveCount:
+          type: integer
+    MoveInput:
+      type: object
+      required:
+        - x
+        - y
+        - player
+      properties:
+        x:
+          type: integer
+          minimum: 0
+          maximum: 14
+        y:
+          type: integer
+          minimum: 0
+          maximum: 14
+        player:
+          $ref: "#/components/schemas/Player"
+    Player:
+      type: string
+      enum: [black, white]
+    Cell:
+      type: string
+      enum: [empty, black, white]
