@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { defineStore } from 'pinia'
 import {
   BOARD_SIZE,
@@ -39,7 +40,9 @@ export const useGameStore = defineStore('game', {
         return { ok: false, reason: 'occupied' }
       }
 
-      this.board[y][x] = this.currentPlayer
+      const nextRow = [...this.board[y]]
+      nextRow[x] = this.currentPlayer
+      Vue.set(this.board, y, nextRow)
       this.moveCount += 1
 
       if (hasFiveInRow(this.board, x, y, this.currentPlayer)) {
