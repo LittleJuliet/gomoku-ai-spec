@@ -3,10 +3,37 @@
     <div class="mx-auto flex w-full max-w-5xl flex-col gap-6">
       <header class="flex flex-col gap-2">
         <h1 class="text-2xl font-bold text-slate-900">五子棋对战</h1>
-        <p class="text-sm text-slate-600">本地双人对战，固定 15×15，连五即胜。</p>
+        <p class="text-sm text-slate-600">
+          {{ mode === 'local' ? '本地双人对战，固定 15×15，连五即胜。' : '人机对战，玩家执黑先手。' }}
+        </p>
       </header>
 
-      <div class="grid gap-6 lg:grid-cols-[280px_1fr]">
+      <div class="flex flex-wrap gap-2">
+        <button
+          class="rounded-md px-3 py-1.5 text-sm font-semibold transition"
+          :class="
+            mode === 'local'
+              ? 'bg-slate-900 text-white'
+              : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
+          "
+          @click="switchMode('local')"
+        >
+          本地双人
+        </button>
+        <button
+          class="rounded-md px-3 py-1.5 text-sm font-semibold transition"
+          :class="
+            mode === 'ai'
+              ? 'bg-slate-900 text-white'
+              : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
+          "
+          @click="switchMode('ai')"
+        >
+          人机对战
+        </button>
+      </div>
+
+      <div v-if="mode === 'local'" class="grid gap-6 lg:grid-cols-[280px_1fr]">
         <div class="flex flex-col gap-4">
           <GameStatus
             :status="game.status"
@@ -31,6 +58,8 @@
         </div>
       </div>
 
+      <AiMatchPage v-else />
+
       <p class="text-xs text-slate-500">
         规则：黑先行，任意方向连续五子或以上即胜，棋盘满则平局。
       </p>
@@ -42,16 +71,19 @@
 import GameBoard from '../components/GameBoard.vue'
 import GameStatus from '../components/GameStatus.vue'
 import { useGameStore } from '../stores'
+import AiMatchPage from './AiMatchPage.vue'
 
 export default {
   name: 'HomePage',
   components: {
     GameBoard,
-    GameStatus
+    GameStatus,
+    AiMatchPage
   },
   data() {
     return {
-      game: useGameStore()
+      game: useGameStore(),
+      mode: 'local'
     }
   },
   created() {
@@ -60,6 +92,12 @@ export default {
     }
   },
   methods: {
+    switchMode(mode) {
+      this.mode = mode
+      if (mode === 'local' && this.game.status === 'idle') {
+        this.game.startGame()
+      }
+    },
     handleSelect({ x, y }) {
       this.game.placeMove(x, y)
     },

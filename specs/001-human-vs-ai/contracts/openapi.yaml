@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Gomoku Human vs AI API (Local)
+  version: 1.0.0
+  description: |
+    人机对战流程的逻辑契约（用于前端服务层/状态管理对接）。
+servers:
+  - url: /api
+paths:
+  /games:
+    post:
+      summary: 创建人机对战
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+  /games/{gameId}:
+    get:
+      summary: 获取对局状态
+      parameters:
+        - $ref: '#/components/parameters/GameId'
+      responses:
+        '200':
+          description: 对局状态
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+  /games/{gameId}/moves:
+    post:
+      summary: 玩家落子并触发电脑落子
+      parameters:
+        - $ref: '#/components/parameters/GameId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerMoveRequest'
+      responses:
+        '200':
+          description: 落子结果与更新后的对局状态
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoveResult'
+  /games/{gameId}/restart:
+    post:
+      summary: 再来一局（新对局）
+      parameters:
+        - $ref: '#/components/parameters/GameId'
+      responses:
+        '201':
+          description: 新对局创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+components:
+  parameters:
+    GameId:
+      name: gameId
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [human, ai]
+        color:
+          type: string
+          enum: [black, white]
+      required: [id, type, color]
+    Move:
+      type: object
+      properties:
+        id:
+          type: string
+        turnNumber:
+          type: integer
+        color:
+          type: string
+          enum: [black, white]
+        x:
+          type: integer
+        y:
+          type: integer
+      required: [id, turnNumber, color, x, y]
+    BoardState:
+      type: object
+      properties:
+        size:
+          type: integer
+        grid:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+              enum: [empty, black, white]
+        lastMove:
+          $ref: '#/components/schemas/Move'
+      required: [size, grid]
+    GameState:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: [idle, in_progress, finished]
+        currentTurn:
+          type: string
+          enum: [black, white]
+        result:
+          type: string
+          enum: [ongoing, black_win, white_win, draw]
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+        board:
+          $ref: '#/components/schemas/BoardState'
+        moves:
+          type: array
+          items:
+            $ref: '#/components/schemas/Move'
+      required: [id, status, currentTurn, result, players, board, moves]
+    PlayerMoveRequest:
+      type: object
+      properties:
+        x:
+          type: integer
+        y:
+          type: integer
+      required: [x, y]
+    MoveResult:
+      type: object
+      properties:
+        playerMove:
+          $ref: '#/components/schemas/Move'
+        aiMove:
+          $ref: '#/components/schemas/Move'
+        game:
+          $ref: '#/components/schemas/GameState'
+      required: [playerMove, game]
