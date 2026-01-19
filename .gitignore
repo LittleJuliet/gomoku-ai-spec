@@ -1,0 +1,17 @@
+# Node / Vite
+node_modules/
+dist/
+build/
+*.log
+.env*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.tmp
+
+# Misc
+coverage/
