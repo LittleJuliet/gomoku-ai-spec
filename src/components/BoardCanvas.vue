@@ -5,6 +5,8 @@
       class="board-canvas"
       role="button"
       aria-label="棋盘，点击落子"
+      :aria-disabled="isDisabled"
+      :class="{ 'is-disabled': isDisabled }"
       @click="handleClick"
     ></canvas>
   </div>
@@ -12,7 +14,7 @@
 
 <script>
 // Canvas 棋盘组件：绘制棋盘与棋子并处理点击落子。
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
 import { useGameStore } from '../stores/game'
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
@@ -25,6 +27,7 @@ export default {
     const canvasRef = ref(null)
     const canvasSize = ref(0)
     const layoutRef = ref({ size: 0, padding: 0, gap: 0 })
+    const isDisabled = computed(() => store.isGameOver || store.isAiTurn || store.isAiThinking)
     let resizeObserver = null
 
     const updateLayout = (size) => {
@@ -180,7 +183,7 @@ export default {
     }
 
     const handleClick = (event) => {
-      if (store.winner) {
+      if (isDisabled.value) {
         return
       }
       const canvas = canvasRef.value
@@ -205,7 +208,7 @@ export default {
       if (row < 0 || col < 0 || row >= store.boardSize || col >= store.boardSize) {
         return
       }
-      if (store.placeMove(row, col)) {
+      if (store.playHumanMove(row, col)) {
         draw()
       }
     }
@@ -237,7 +240,8 @@ export default {
     return {
       wrapRef,
       canvasRef,
-      handleClick
+      handleClick,
+      isDisabled
     }
   }
 }

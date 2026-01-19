@@ -2,8 +2,8 @@
   <transition name="fade">
     <div v-if="open" class="modal-mask" role="dialog" aria-modal="true">
       <div class="modal-card">
-        <div class="modal-title">胜负已分</div>
-        <div class="modal-body" aria-live="polite">{{ winnerText }} 获胜</div>
+        <div class="modal-title">{{ titleText }}</div>
+        <div class="modal-body" aria-live="polite">{{ bodyText }}</div>
         <div class="modal-actions">
           <button class="btn btn-primary" type="button" @click="$emit('restart')">
             重新开始
@@ -25,14 +25,21 @@ export default {
       type: Boolean,
       default: false
     },
-    winner: {
-      type: Number,
-      default: null
+    winnerLabel: {
+      type: String,
+      default: ''
+    },
+    isDraw: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {
-    const winnerText = computed(() => (props.winner === 1 ? '黑子' : '白子'))
-    return { winnerText }
+    const titleText = computed(() => (props.isDraw ? '平局' : '胜负已分'))
+    const bodyText = computed(() =>
+      props.isDraw ? '棋盘已满，判定为平局' : `${props.winnerLabel} 获胜`
+    )
+    return { titleText, bodyText }
   }
 }
 </script>

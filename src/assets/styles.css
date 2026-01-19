@@ -96,6 +96,10 @@ body {
   cursor: pointer;
 }
 
+.board-canvas.is-disabled {
+  cursor: not-allowed;
+}
+
 .side-panel {
   display: flex;
   flex-direction: column;
@@ -104,7 +108,8 @@ body {
 
 .status-card,
 .rule-card,
-.meta-card {
+.meta-card,
+.mode-card {
   padding: 18px 20px;
   border-radius: 16px;
   background: linear-gradient(160deg, rgba(52, 37, 26, 0.92), rgba(34, 25, 18, 0.92));
@@ -114,7 +119,8 @@ body {
 
 .status-title,
 .rule-title,
-.meta-title {
+.meta-title,
+.mode-title {
   font-family: var(--font-heading);
   font-size: 18px;
   margin-bottom: 12px;
@@ -166,6 +172,43 @@ body {
 .meta-value {
   color: var(--text-light);
   font-weight: 600;
+}
+
+.mode-options {
+  display: flex;
+  gap: 10px;
+}
+
+.mode-option {
+  flex: 1;
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-light);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.mode-option:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(12, 7, 3, 0.25);
+}
+
+.mode-option.is-active {
+  background: linear-gradient(145deg, rgba(246, 225, 181, 0.9), rgba(207, 161, 90, 0.9));
+  color: #24170e;
+  font-weight: 600;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.mode-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 .stone-preview {
