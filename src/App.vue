@@ -2,7 +2,7 @@
   <div class="app">
     <header class="app-header">
       <div class="title-block">
-        <p class="eyebrow">Local Two-Player</p>
+        <p class="eyebrow">{{ modeLabel }}</p>
         <h1>Gomoku</h1>
         <p class="subtitle">Connect five or more stones to win.</p>
       </div>
@@ -21,7 +21,7 @@
         <div class="canvas-wrap">
           <canvas
             ref="canvasRef"
-            class="board-canvas"
+            :class="['board-canvas', { 'is-ai-turn': isAiTurn }]"
             :width="canvasSize"
             :height="canvasSize"
             @click="handleCanvasClick"
@@ -30,6 +30,38 @@
       </section>
 
       <aside class="side-panel">
+        <div class="card">
+          <h3>Mode</h3>
+          <div class="mode-options" role="radiogroup" aria-label="Game mode">
+            <label class="mode-option" :data-selected="game.mode === 'local'">
+              <input
+                type="radio"
+                name="mode"
+                value="local"
+                :checked="game.mode === 'local'"
+                @change="setMode('local')"
+              />
+              <div class="mode-copy">
+                <p class="mode-title">Local Two-Player</p>
+                <p class="mode-desc">Two players share the board.</p>
+              </div>
+            </label>
+            <label class="mode-option" :data-selected="game.mode === 'ai-hard'">
+              <input
+                type="radio"
+                name="mode"
+                value="ai-hard"
+                :checked="game.mode === 'ai-hard'"
+                @change="setMode('ai-hard')"
+              />
+              <div class="mode-copy">
+                <p class="mode-title">Human vs AI (Hard)</p>
+                <p class="mode-desc">You play Black; AI responds as White.</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
         <div class="card">
           <h3>Turn</h3>
           <div class="turn-indicator">
@@ -46,6 +78,7 @@
           <ul class="rule-list">
             <li>Black moves first.</li>
             <li>Players alternate on valid moves.</li>
+            <li>In Human vs AI, you play Black.</li>
             <li>Five or more stones in a row wins.</li>
             <li>Board full without a winner is a draw.</li>
           </ul>
@@ -157,18 +190,32 @@ export default {
     const game = useGameStore()
     const canvasRef = ref(null)
 
+    const modeLabel = computed(() =>
+      game.mode === 'ai-hard' ? 'Human vs AI (Hard)' : 'Local Two-Player'
+    )
+
+    const getActorLabel = (player) => {
+      if (game.mode === 'ai-hard') {
+        return player === 1 ? 'Player (Black)' : 'AI (White)'
+      }
+      return player === 1 ? 'Black' : 'White'
+    }
+
     const statusText = computed(() => {
       if (game.status === 'playing') {
-        return `${game.currentPlayerLabel} to move`
+        return `${getActorLabel(game.currentPlayer)} to move`
       }
       if (game.status === 'won') {
-        return `Winner: ${game.winnerLabel}`
+        return `Winner: ${getActorLabel(game.winner)}`
       }
       return 'Draw'
     })
 
     const helperText = computed(() => {
       if (game.status === 'playing') {
+        if (game.mode === 'ai-hard' && game.currentPlayer !== 1) {
+          return 'AI is choosing a move.'
+        }
         return 'Place a stone on an empty intersection.'
       }
       if (game.status === 'won') {
@@ -185,6 +232,10 @@ export default {
       return game.currentPlayer === 1 ? 'black' : 'white'
     })
 
+    const isAiTurn = computed(
+      () => game.mode === 'ai-hard' && game.status === 'playing' && game.currentPlayer === 2
+    )
+
     const draw = () => {
       const canvas = canvasRef.value
       if (!canvas) return
@@ -196,6 +247,7 @@ export default {
     const handleCanvasClick = (event) => {
       const canvas = canvasRef.value
       if (!canvas || game.status !== 'playing') return
+      if (game.mode === 'ai-hard' && game.currentPlayer !== 1) return
 
       const rect = canvas.getBoundingClientRect()
       const x = event.clientX - rect.left
@@ -217,6 +269,10 @@ export default {
       game.restart()
     }
 
+    const setMode = (mode) => {
+      game.setMode(mode)
+    }
+
     onMounted(() => {
       draw()
     })
@@ -232,11 +288,14 @@ export default {
     return {
       canvasRef,
       canvasSize: CANVAS_SIZE,
+      modeLabel,
       statusText,
       helperText,
       stoneClass,
+      isAiTurn,
       handleCanvasClick,
       restartGame,
+      setMode,
       game
     }
   }
