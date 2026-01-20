@@ -1,7 +1,7 @@
 # Research Notes: 双人对战五子棋游戏
 
 **Date**: 2026-01-20  
-**Spec**: /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/001-two-player-gomoku/spec.md
+**Spec**: /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/002-two-player-gomoku/spec.md
 
 ## Decisions
 

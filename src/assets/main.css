@@ -72,6 +72,40 @@ button {
   font-size: 0.98rem;
 }
 
+.mode-toggle {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(30, 95, 75, 0.08);
+  border: 1px solid rgba(30, 95, 75, 0.15);
+}
+
+.mode-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.mode-btn.active {
+  background: var(--accent);
+  color: #f8f4ee;
+  box-shadow: 0 6px 16px rgba(30, 95, 75, 0.22);
+}
+
+.mode-btn:not(.active):hover {
+  background: rgba(30, 95, 75, 0.12);
+  color: var(--ink);
+}
+
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
@@ -155,6 +189,12 @@ button {
   border: 1px solid rgba(47, 35, 30, 0.15);
 }
 
+.chip.ai {
+  background: rgba(30, 95, 75, 0.16);
+  color: var(--accent-strong);
+  border: 1px solid rgba(30, 95, 75, 0.2);
+}
+
 .result {
   padding: 12px 14px;
   border-radius: 14px;
@@ -176,6 +216,17 @@ button {
 .message {
   color: var(--danger);
   font-size: 0.9rem;
+}
+
+.ai-status {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.ai-status.pending {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .btn {

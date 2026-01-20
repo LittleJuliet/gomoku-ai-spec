@@ -3,7 +3,27 @@
     <header class="header">
       <div>
         <h1 class="title">五子棋对战</h1>
-        <p class="subtitle">同屏双人 · 自由规则 · 15×15 棋盘</p>
+        <p class="subtitle">{{ subtitleText }}</p>
+        <div class="mode-toggle" role="group" aria-label="对战模式">
+          <button
+            class="mode-btn"
+            type="button"
+            :class="{ active: isLocalMode }"
+            :aria-pressed="isLocalMode"
+            @click="setMode('local')"
+          >
+            同屏双人
+          </button>
+          <button
+            class="mode-btn"
+            type="button"
+            :class="{ active: isAiMode }"
+            :aria-pressed="isAiMode"
+            @click="setMode('human_vs_ai')"
+          >
+            人机对战 · 极难
+          </button>
+        </div>
       </div>
       <button
         class="btn primary"
@@ -21,7 +41,7 @@
           :board="game.board"
           :board-size="game.boardSize"
           :last-move="game.lastMove"
-          :disabled="game.status === 'ended'"
+          :disabled="game.status === 'ended' || (isAiMode && (game.aiPending || isAiTurn))"
           aria-label="五子棋棋盘，点击交叉点落子"
           @cell-click="handleCellClick"
         />
@@ -34,8 +54,16 @@
       <aside class="side-panel">
         <div class="status-card" aria-live="polite">
           <div class="status-row">
+            <span>对战模式</span>
+            <span class="chip" :class="modeChipClass">{{ modeLabel }}</span>
+          </div>
+          <div class="status-row">
+            <span>对手</span>
+            <span class="chip" :class="opponentChipClass">{{ opponentLabel }}</span>
+          </div>
+          <div class="status-row">
             <span>当前回合</span>
-            <span class="chip" :class="currentChipClass">{{ currentPlayerLabel }}</span>
+            <span class="chip" :class="currentChipClass">{{ currentTurnLabel }}</span>
           </div>
           <div class="status-row">
             <span>对局状态</span>
@@ -43,8 +71,9 @@
           </div>
           <div class="status-row">
             <span>先手</span>
-            <span class="chip black">黑子</span>
+            <span class="chip black">{{ firstPlayerLabel }}</span>
           </div>
+          <p v-if="isAiMode" class="ai-status" :class="{ pending: game.aiPending }">{{ aiStatusText }}</p>
           <p v-if="game.message" class="message" role="alert">{{ game.message }}</p>
           <p class="helper">提示：点击棋盘交叉点落子。</p>
         </div>
@@ -85,13 +114,55 @@ export default {
     };
   },
   computed: {
-    currentPlayerLabel() {
+    isAiMode() {
+      return this.game.gameMode === 'human_vs_ai';
+    },
+    isLocalMode() {
+      return this.game.gameMode === 'local';
+    },
+    isAiTurn() {
+      return this.isAiMode && this.game.currentActor === 'ai';
+    },
+    currentTurnLabel() {
+      if (this.isAiMode) {
+        return this.game.currentActor === 'ai' ? 'AI · 白子' : '人类 · 黑子';
+      }
       return this.game.currentPlayer === 'black' ? '黑子' : '白子';
     },
     currentChipClass() {
       return this.game.currentPlayer === 'black' ? 'black' : 'white';
     },
+    modeLabel() {
+      return this.isAiMode ? '人机' : '双人';
+    },
+    modeChipClass() {
+      return this.isAiMode ? 'ai' : 'black';
+    },
+    opponentLabel() {
+      return this.isAiMode ? 'AI（极难）' : '玩家B';
+    },
+    opponentChipClass() {
+      return this.isAiMode ? 'ai' : 'white';
+    },
+    subtitleText() {
+      return this.isAiMode ? '人机对战 · 极难 · 15×15 棋盘' : '同屏双人 · 自由规则 · 15×15 棋盘';
+    },
+    firstPlayerLabel() {
+      return this.isAiMode ? '人类（黑子）' : '黑子';
+    },
+    aiStatusText() {
+      if (!this.isAiMode) {
+        return '';
+      }
+      return this.game.aiPending ? 'AI 思考中...' : 'AI 等待中';
+    },
     resultText() {
+      if (this.game.result === 'human_win') {
+        return '人类胜利';
+      }
+      if (this.game.result === 'ai_win') {
+        return 'AI 胜利';
+      }
       if (this.game.result === 'black_win') {
         return '黑子胜利';
       }
@@ -110,15 +181,29 @@ export default {
       if (this.game.result === 'black_win' || this.game.result === 'white_win') {
         return '';
       }
+      if (this.game.result === 'human_win' || this.game.result === 'ai_win') {
+        return '';
+      }
       return 'pending';
     },
     hasWinner() {
-      return this.game.result === 'black_win' || this.game.result === 'white_win';
+      return (
+        this.game.result === 'black_win' ||
+        this.game.result === 'white_win' ||
+        this.game.result === 'human_win' ||
+        this.game.result === 'ai_win'
+      );
     },
     showWinnerModal() {
       return this.hasWinner && !this.winnerDismissed;
     },
     winnerText() {
+      if (this.game.result === 'human_win') {
+        return '人类';
+      }
+      if (this.game.result === 'ai_win') {
+        return 'AI';
+      }
       if (this.game.result === 'black_win') {
         return '黑子';
       }
@@ -134,6 +219,10 @@ export default {
   methods: {
     handleCellClick({ row, col }) {
       this.game.placeMove(row, col);
+    },
+    setMode(mode) {
+      this.winnerDismissed = false;
+      this.game.setMode(mode);
     },
     handleReset() {
       this.winnerDismissed = false;

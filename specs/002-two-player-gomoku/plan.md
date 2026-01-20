@@ -1,7 +1,7 @@
 # Implementation Plan: 双人对战五子棋游戏
 
-**Branch**: `001-two-player-gomoku` | **Date**: 2026-01-20 | **Spec**: /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/001-two-player-gomoku/spec.md
-**Input**: Feature specification from `/Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/001-two-player-gomoku/spec.md`
+**Branch**: `002-two-player-gomoku` | **Date**: 2026-01-20 | **Spec**: /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/002-two-player-gomoku/spec.md
+**Input**: Feature specification from `/Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/002-two-player-gomoku/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
@@ -33,7 +33,7 @@
 ### Documentation (this feature)
 
 ```text
-/Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/001-two-player-gomoku/
+/Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/002-two-player-gomoku/
 ├── plan.md              # This file (/speckit.plan command output)
 ├── research.md          # Phase 0 output (/speckit.plan command)
 ├── data-model.md        # Phase 1 output (/speckit.plan command)

@@ -1,0 +1,180 @@
+# NOTE: 概念性接口说明（不落地实现后端/API）
+# NOTE: 该契约仅描述本地人机模式状态结构；模式切换与 AI 取消为前端行为。
+openapi: 3.0.3
+info:
+  title: Gomoku Human vs AI API
+  version: 1.0.0
+servers:
+  - url: /api
+paths:
+  /matches:
+    post:
+      summary: Create a new Human vs AI match
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchCreateRequest"
+      responses:
+        "201":
+          description: Match created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchState"
+  /matches/{matchId}:
+    get:
+      summary: Get current match state
+      parameters:
+        - $ref: "#/components/parameters/MatchId"
+      responses:
+        "200":
+          description: Current match state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchState"
+        "404":
+          description: Match not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /matches/{matchId}/moves:
+    post:
+      summary: Place a human move
+      parameters:
+        - $ref: "#/components/parameters/MatchId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MoveRequest"
+      responses:
+        "200":
+          description: Move accepted and state updated (includes AI response when applicable)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchState"
+        "400":
+          description: Invalid move
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Match already ended or not human turn
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /matches/{matchId}/reset:
+    post:
+      summary: Reset the match to a new game
+      parameters:
+        - $ref: "#/components/parameters/MatchId"
+      responses:
+        "200":
+          description: Match reset
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchState"
+        "404":
+          description: Match not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  parameters:
+    MatchId:
+      name: matchId
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    MatchCreateRequest:
+      type: object
+      required: []
+      properties:
+        mode:
+          type: string
+          enum: [human_vs_ai]
+        difficulty:
+          type: string
+          enum: [extreme]
+    MatchState:
+      type: object
+      required: [id, mode, difficulty, status, result, currentActor, moveCount, board]
+      properties:
+        id:
+          type: string
+        mode:
+          type: string
+          enum: [human_vs_ai]
+        difficulty:
+          type: string
+          enum: [extreme]
+        status:
+          type: string
+          enum: [not_started, in_progress, ended]
+        result:
+          type: string
+          enum: [none, human_win, ai_win, draw]
+        currentActor:
+          type: string
+          enum: [human, ai]
+        moveCount:
+          type: integer
+          minimum: 0
+        board:
+          $ref: "#/components/schemas/Board"
+        lastMove:
+          $ref: "#/components/schemas/MovePosition"
+    Board:
+      type: object
+      required: [size, cells]
+      properties:
+        size:
+          type: integer
+          enum: [15]
+        cells:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+              enum: [empty, black, white]
+    MoveRequest:
+      type: object
+      required: [row, col]
+      properties:
+        row:
+          type: integer
+          minimum: 0
+          maximum: 14
+        col:
+          type: integer
+          minimum: 0
+          maximum: 14
+    MovePosition:
+      type: object
+      required: [row, col]
+      properties:
+        row:
+          type: integer
+        col:
+          type: integer
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string

@@ -1,6 +1,6 @@
 # Feature Specification: 双人对战五子棋游戏
 
-**Feature Branch**: `001-two-player-gomoku`  
+**Feature Branch**: `002-two-player-gomoku`  
 **Created**: 2026-01-20  
 **Status**: Draft  
 **Input**: User description: "开发一个双人对战的五子棋游戏。"

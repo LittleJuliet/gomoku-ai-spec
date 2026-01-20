@@ -5,7 +5,7 @@ description: "Task list for feature implementation"
 
 # Tasks: Two-Player Gomoku Game
 
-**Input**: Design documents from `/Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/001-two-player-gomoku/`
+**Input**: Design documents from `/Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/002-two-player-gomoku/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
 **Tests**: Not requested in the feature specification; no test tasks included.
@@ -96,10 +96,10 @@ description: "Task list for feature implementation"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [x] T020 [P] Align quickstart commands with actual scripts in /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/001-two-player-gomoku/quickstart.md and /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/package.json
+- [x] T020 [P] Align quickstart commands with actual scripts in /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/002-two-player-gomoku/quickstart.md and /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/package.json
 - [x] T021 [P] Add basic accessibility labels for status and controls in /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/src/views/GameView.vue
-- [x] T022 [P] Add performance verification checklist in /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/001-two-player-gomoku/quickstart.md
-- [x] T023 [P] Mark contracts as conceptual-only in /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/001-two-player-gomoku/contracts/gomoku-openapi.yaml
+- [x] T022 [P] Add performance verification checklist in /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/002-two-player-gomoku/quickstart.md
+- [x] T023 [P] Mark contracts as conceptual-only in /Users/juliet/Documents/frontend/code/gomoku-ai-spec/feature-spec-kit-v2/specs/002-two-player-gomoku/contracts/gomoku-openapi.yaml
 
 ---
 
